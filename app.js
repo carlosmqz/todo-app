@@ -18,16 +18,18 @@ app.use(express.json())
 //user routes
 app.post('/user/signup', async function(req, res){
     try{
-        const username = req.body.username;
-        const password = await bcrypt.hash(req.body.password,8);
         let user = {
-            username: username,
-            password: password
+            username: req.body.username,
+            password: await bcrypt.hash(req.body.password,8)
         }
         userConn.getConnection((err, connection) =>{
+            if(err){
+                throw err;
+            }
             connection.beginTransaction((err) => {
-                if(err)
+                if(err){
                     throw err;
+                }
                 connection.query('INSERT INTO users SET ?',user,(error) =>{
                     if(error){
                         return connection.rollback(function(err){
