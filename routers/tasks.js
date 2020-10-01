@@ -2,10 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const dbpool = require('../models/dbpool');
-const utils = require('../utils/utils');
 const Utils = require('../utils/utils');
 
-router.get('/task/list', utils.validateAuth, function(req, res){
+router.get('/task/list', Utils.validateAuth, function(req, res){
     user = res.user;
     console.log(user);
     dbpool.getConnection((err, connection) =>{
